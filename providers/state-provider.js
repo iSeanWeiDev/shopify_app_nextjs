@@ -4,6 +4,10 @@ const AppStateContext = createContext(null);
 AppStateContext.displayName = 'AppStateContext';
 
 const initialState = {
+  app: {
+    shopName: null,
+    accessToken: null
+  },
   themes: null,
   create: false,
   delete: false,

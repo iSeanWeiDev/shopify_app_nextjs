@@ -1,16 +1,55 @@
 import axios from 'axios';
 require('dotenv').config();
 
-const BASE_URL = 'https://white-eel-46.loca.lt';
+class AxiosRequest {
+  constructor(shopName, accessToken) {
+    this.BASE_URL = 'https://dull-shrimp-16.loca.lt';
+    this.opts = {
+      headers: {
+        shopName,
+        accessToken
+      }
+    };
+  }
 
-export const axiosPostRequest = (endpoint, data) =>
-  new Promise((resolve, reject) => {
-    axios
-      .post(`${BASE_URL}${endpoint}`, data)
-      .then(function (response) {
-        resolve(response.data);
-      })
-      .catch(function (error) {
-        reject(error);
-      });
-  });
+  async get(endpoint, params) {
+    try {
+      const response = await axios.get(endpoint, this.opts);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async post(endpoint, payload) {
+    try {
+      const response = await axios.post(endpoint, payload, this.opts);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async patch(endpoint, payload) {
+    try {
+      const response = await axios.patch(endpoint, payload, this.opts);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async delete(endpoint, payload) {
+    try {
+      const response = await axios.patch(endpoint, payload, this.opts);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
+export default AxiosRequest;

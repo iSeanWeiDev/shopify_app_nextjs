@@ -10,10 +10,7 @@ import { AppToastProvider } from '@/providers/toast-provider';
 import theme from './theme';
 import './app.css';
 
-const ThemeFlightApp = ({ Component, pageProps, host, access_token }) => {
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem('access_token', access_token);
-  }
+const ThemeFlightApp = ({ Component, pageProps, host, shop, access_token }) => {
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
@@ -33,7 +30,12 @@ const ThemeFlightApp = ({ Component, pageProps, host, access_token }) => {
         <ThemeProvider theme={theme}>
           <AppToastProvider>
             <AppStateProvider>
-              <AppApolloProvider Component={Component} {...pageProps} />
+              <AppApolloProvider
+                Component={Component}
+                shop={shop}
+                accessToken={access_token}
+                {...pageProps}
+              />
             </AppStateProvider>
           </AppToastProvider>
         </ThemeProvider>
@@ -45,7 +47,8 @@ const ThemeFlightApp = ({ Component, pageProps, host, access_token }) => {
 ThemeFlightApp.getInitialProps = async ({ ctx }) => {
   return {
     host: ctx.query.host,
-    access_token: ctx.query.access_token
+    access_token: ctx.query.access_token,
+    shop: ctx.query.shop
   };
 };
 
