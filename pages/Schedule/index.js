@@ -11,15 +11,21 @@ import {
   FormControlLabel,
   TextField
 } from '@material-ui/core';
-import moment from 'moment/moment';
+import AxiosRequest from '@/utils/axios';
+import { distanceDate } from '@/utils/date-helper';
+import { useAppToast } from '@/providers/toast-provider';
 import useStyles from './styles';
 
 const ThemeSchedule = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const appToast = useAppToast();
   const [checked, setChecked] = useState(false);
   const [appState, setAppState] = useAppState();
-
+  const [formData, setFormData] = useState({
+    startAt: '',
+    endAt: ''
+  });
   useEffect(() => {
     setOpen(appState.schedule);
   }, [appState.schedule]);
@@ -35,6 +41,32 @@ const ThemeSchedule = () => {
     setChecked(event.target.checked);
   };
 
+  const handleCalendarChange = (key, event) => {
+    setFormData({
+      ...formData,
+      [key]: e.target.value
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const distance = distanceDate(formData.startAt);
+      if (distance.includes('ago')) {
+        const error = new Error('The schedule date cannot be set in the past.');
+        throw error;
+      }
+      const { shopName, accessToken } = appState.app;
+      const axiosRequest = new AxiosRequest(shopName, accessToken);
+      const updatedSchedule = await axiosRequest.patch(
+        `/api/themes/${appState.selectedTheme}`,
+        formData
+      );
+      console.log(updatedSchedule);
+    } catch (error) {
+      appToast(error.message, 'error');
+    }
+  };
+
   return (
     <Dialog open={open} onClose={handleDialogClose}>
       <DialogTitle>Schedule a theme go live (EDT):</DialogTitle>
@@ -45,7 +77,8 @@ const ThemeSchedule = () => {
             id="datetime-local"
             label="Start Date & Time"
             type="datetime-local"
-            defaultValue={moment().add('1', 'hour').format('YYYY-MM-DDTHH:mm')}
+            value={new Date(formData.startAt)}
+            onChange={(e) => handleCalendarChange('startAt', e)}
             InputLabelProps={{
               shrink: true
             }}
@@ -61,7 +94,8 @@ const ThemeSchedule = () => {
               id="datetime-local"
               label="End Date & Time"
               type="datetime-local"
-              defaultValue={moment().add('2', 'hours').format('YYYY-MM-DDTHH:mm')}
+              value={new Date(formData.endAt)}
+              onChange={(e) => handleCalendarChange('endAt', e)}
               InputLabelProps={{
                 shrink: true
               }}
@@ -71,6 +105,7 @@ const ThemeSchedule = () => {
             className={classes.modalFormButton}
             variant="contained"
             color="primary"
+            onClick={handleSubmit}
             disableElevation
           >
             Schedule

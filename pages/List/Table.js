@@ -22,7 +22,7 @@ import {
 } from '@material-ui/icons';
 import { loremIpsum } from 'react-lorem-ipsum';
 import { useAppState } from '@/providers/state-provider';
-import { convertISOToDate } from '@/utils/date-format';
+import { convertISOToDate } from '@/utils/date-helper';
 import { useTableStyles } from './styles';
 import { THEME_LIST_TABLE } from './constant';
 
@@ -83,7 +83,7 @@ const ThemeListTable = () => {
                 {row?.scheduled_at}
               </TableCell>
               <TableCell component="td" align="center">
-                {row.role === 'main' && (
+                {row.status === 'ACTIVATED' && (
                   <Box display="flex" justifyContent="center" alignItems="center">
                     <div className={classes.status_live}>
                       <WorldIcon />
@@ -91,7 +91,7 @@ const ThemeListTable = () => {
                     </div>
                   </Box>
                 )}
-                {row.role === 'scheduled' && (
+                {row.role === 'SCHEDULED' && (
                   <Box display="flex" justifyContent="center" alignItems="center">
                     <div className={classes.status_scheduled}>
                       <EventAvailableIcon />
@@ -104,7 +104,9 @@ const ThemeListTable = () => {
                 <IconButton
                   size="small"
                   aria-label="delete"
-                  onClick={() => setAppState({ ...appState, schedule: true })}
+                  onClick={() =>
+                    setAppState({ ...appState, schedule: true, selectedTheme: row.id })
+                  }
                 >
                   <AccessTimeIcon />
                 </IconButton>

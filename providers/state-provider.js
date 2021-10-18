@@ -9,6 +9,7 @@ const initialState = {
     accessToken: null
   },
   themes: null,
+  schedules: null,
   create: false,
   delete: false,
   schedule: false

@@ -3,19 +3,19 @@ require('dotenv').config();
 
 class AxiosRequest {
   constructor(shopName, accessToken) {
-    this.BASE_URL = 'https://dull-shrimp-16.loca.lt';
+    this.BASE_URL = 'https://quick-frog-9.loca.lt';
     this.opts = {
       headers: {
-        shopName,
-        accessToken
+        shopname: shopName,
+        accesstoken: accessToken
       }
     };
   }
 
   async get(endpoint, params) {
     try {
-      const response = await axios.get(endpoint, this.opts);
-      return response;
+      const response = await axios.get(`${this.BASE_URL}${endpoint}`, this.opts);
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -23,9 +23,9 @@ class AxiosRequest {
 
   async post(endpoint, payload) {
     try {
-      const response = await axios.post(endpoint, payload, this.opts);
+      const response = await axios.post(`${this.BASE_URL}${endpoint}`, payload, this.opts);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -33,9 +33,9 @@ class AxiosRequest {
 
   async patch(endpoint, payload) {
     try {
-      const response = await axios.patch(endpoint, payload, this.opts);
+      const response = await axios.patch(`${this.BASE_URL}${endpoint}`, payload, this.opts);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -45,7 +45,7 @@ class AxiosRequest {
     try {
       const response = await axios.patch(endpoint, payload, this.opts);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw error;
     }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppState } from '@/providers/state-provider';
 import { useAppToast } from '@/providers/toast-provider';
-import { axiosPostRequest, axiosGetRequest } from '@/utils/axios';
+import AxiosRequest from '@/utils/axios';
 import ThemeListTable from './Table';
 
 const ThemeList = () => {
@@ -12,10 +12,10 @@ const ThemeList = () => {
     if (appState.app.shopName && appState.app.accessToken) {
       const loadThemes = async () => {
         try {
-          const resultOfValidate = await axiosPostRequest('/api/validate', {
-            ...appState.app
-          });
+          const { shopName, accessToken } = appState.app;
+          const axiosRequest = new AxiosRequest(shopName, accessToken);
 
+          const resultOfValidate = await axiosRequest.post('/api/validate');
           if (resultOfValidate.msg === 'NOT_FOUND_API_WEBHOOK') {
             appToast(
               'Current store doesnt setup the webhooks, please feel free to contact us',
@@ -23,15 +23,12 @@ const ThemeList = () => {
             );
           }
 
-          const themes = await axiosGetRequest('/api/themes', {
-            ...appState.app
-          });
-
-          console.log(themes);
-
+          const themes = await axiosRequest.get('/api/themes');
+          const schedules = await axiosRequest.get('/api/schedules');
           setAppState({
             ...appState,
-            themes: themes
+            themes: themes,
+            schedules: schedules
           });
           appToast('Theme Flight App has been launched!', 'success');
         } catch (error) {
