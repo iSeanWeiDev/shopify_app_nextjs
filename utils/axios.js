@@ -3,7 +3,7 @@ require('dotenv').config();
 
 class AxiosRequest {
   constructor(shopName, accessToken) {
-    this.BASE_URL = 'https://quick-frog-9.loca.lt';
+    this.BASE_URL = 'https://stale-crab-55.loca.lt';
     this.opts = {
       headers: {
         shopname: shopName,
@@ -43,7 +43,7 @@ class AxiosRequest {
 
   async delete(endpoint, payload) {
     try {
-      const response = await axios.patch(endpoint, payload, this.opts);
+      const response = await axios.delete(endpoint, this.opts);
 
       return response.data;
     } catch (error) {

@@ -3,6 +3,7 @@ import { useAppState } from '@/providers/state-provider';
 import { useAppToast } from '@/providers/toast-provider';
 import { Dialog, DialogActions, DialogTitle, Typography, Button } from '@material-ui/core';
 import useStyles from './styles';
+import AxiosRequest from '@/utils/axios';
 
 const ThemeDelete = () => {
   const classes = useStyles();
@@ -31,6 +32,18 @@ const ThemeDelete = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    try {
+      const { shopName, accessToken } = appState.app;
+      console.log(shopName);
+      const axiosRequest = new AxiosRequest(shopName, accessToken);
+      const deleteTheme = await axiosRequest.delete(`/api/themes/${appState.selectedTheme}`);
+      console.log(deleteTheme);
+    } catch (error) {
+      appToast(error.message, 'error');
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -44,8 +57,12 @@ const ThemeDelete = () => {
         </Typography>
       </DialogTitle>
       <DialogActions>
-        <Button color="secondary">Cancel</Button>
-        <Button color="primary">Continue</Button>
+        <Button color="secondary" onClick={handleDialogClose} onKeyDown={handleKeyDown}>
+          Cancel
+        </Button>
+        <Button color="primary" onClick={handleSubmit}>
+          Continue
+        </Button>
       </DialogActions>
     </Dialog>
   );
