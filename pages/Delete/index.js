@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAppState } from '@/providers/state-provider';
 import { useAppToast } from '@/providers/toast-provider';
 import { Dialog, DialogActions, DialogTitle, Typography, Button } from '@material-ui/core';
+import AxiosRequest from '@/utils/axios';
 import useStyles from './styles';
 import AxiosRequest from '@/utils/axios';
 
@@ -18,6 +19,7 @@ const ThemeDelete = () => {
   const handleDialogClose = () => {
     setAppState({
       ...appState,
+      selected: null,
       delete: false
     });
   };
@@ -27,18 +29,27 @@ const ThemeDelete = () => {
       appToast('You cancelled the removing the theme!', 'info');
       setAppState({
         ...appState,
+        selected: null,
         delete: false
       });
     }
   };
 
-  const handleSubmit = async () => {
+  const handleContinue = async () => {
     try {
       const { shopName, accessToken } = appState.app;
-      console.log(shopName);
       const axiosRequest = new AxiosRequest(shopName, accessToken);
-      const deleteTheme = await axiosRequest.delete(`/api/themes/${appState.selectedTheme}`);
-      console.log(deleteTheme);
+
+      const deleteResponse = await axiosRequest.delete(`/api/themes/${appState.selected}`);
+      console.log(deleteResponse);
+      let tmp = appState.themes;
+      tmp = tmp.filter((el) => el.id !== appState.selected);
+      setAppState({
+        ...appState,
+        themes: tmp,
+        selected: null,
+        delete: false
+      });
     } catch (error) {
       appToast(error.message, 'error');
     }
@@ -57,10 +68,10 @@ const ThemeDelete = () => {
         </Typography>
       </DialogTitle>
       <DialogActions>
-        <Button color="secondary" onClick={handleDialogClose} onKeyDown={handleKeyDown}>
+        <Button color="secondary" onClick={handleDialogClose}>
           Cancel
         </Button>
-        <Button color="primary" onClick={handleSubmit}>
+        <Button color="primary" onClick={handleContinue}>
           Continue
         </Button>
       </DialogActions>
