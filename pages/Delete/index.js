@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useAppState } from '@/providers/state-provider';
 import { useAppToast } from '@/providers/toast-provider';
 import { Dialog, DialogActions, DialogTitle, Typography, Button } from '@material-ui/core';
-import AxiosRequest from '@/utils/axios';
 import useStyles from './styles';
 import AxiosRequest from '@/utils/axios';
 
