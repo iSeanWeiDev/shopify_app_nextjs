@@ -30,14 +30,14 @@ const ThemeListTable = () => {
   const classes = useTableStyles();
   const [appState, setAppState] = useAppState();
   const [rows, setRows] = useState([]);
+  const [schedules, setSchedules] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    if (appState.themes) {
-      setRows(appState.themes);
-    }
-  }, [appState.themes]);
+    setRows(appState.themes);
+    setSchedules(appState.schedules);
+  }, [appState.themes, appState.schedules]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -91,7 +91,7 @@ const ThemeListTable = () => {
                     </div>
                   </Box>
                 )}
-                {row.role === 'SCHEDULED' && (
+                {schedules.findIndex((el) => el.themeId === row.id) > -1 && (
                   <Box display="flex" justifyContent="center" alignItems="center">
                     <div className={classes.status_scheduled}>
                       <EventAvailableIcon />
@@ -104,9 +104,7 @@ const ThemeListTable = () => {
                 <IconButton
                   size="small"
                   aria-label="delete"
-                  onClick={() =>
-                    setAppState({ ...appState, schedule: true, selectedTheme: row.id })
-                  }
+                  onClick={() => setAppState({ ...appState, schedule: true, selected: row.id })}
                 >
                   <AccessTimeIcon />
                 </IconButton>
@@ -116,7 +114,7 @@ const ThemeListTable = () => {
                 <IconButton
                   size="small"
                   aria-label="delete"
-                  onClick={() => setAppState({ ...appState, delete: true })}
+                  onClick={() => setAppState({ ...appState, delete: true, selected: row.id })}
                 >
                   <DeleteIcon />
                 </IconButton>

@@ -3,7 +3,12 @@ require('dotenv').config();
 
 class AxiosRequest {
   constructor(shopName, accessToken) {
-    this.BASE_URL = 'https://quick-frog-9.loca.lt';
+    console.log(shopName, accessToken);
+    this.BASE_URL =
+      process.env.NEXT_NODE_ENV === 'development'
+        ? 'https://new-zebra-23.loca.lt'
+        : 'https://fxgqrpvka7.execute-api.us-east-1.amazonaws.com/dev';
+
     this.opts = {
       headers: {
         shopname: shopName,
@@ -42,8 +47,10 @@ class AxiosRequest {
   }
 
   async delete(endpoint, payload) {
+    console.log(this.opts);
+
     try {
-      const response = await axios.patch(endpoint, payload, this.opts);
+      const response = await axios.delete(`${this.BASE_URL}${endpoint}`, payload, this.opts);
 
       return response.data;
     } catch (error) {

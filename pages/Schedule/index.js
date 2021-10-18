@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   TextField
 } from '@material-ui/core';
+import moment from 'moment/moment';
 import AxiosRequest from '@/utils/axios';
 import { distanceDate } from '@/utils/date-helper';
 import { useAppToast } from '@/providers/toast-provider';
@@ -44,7 +45,7 @@ const ThemeSchedule = () => {
   const handleCalendarChange = (key, event) => {
     setFormData({
       ...formData,
-      [key]: e.target.value
+      [key]: event.target.value
     });
   };
 
@@ -58,10 +59,18 @@ const ThemeSchedule = () => {
       const { shopName, accessToken } = appState.app;
       const axiosRequest = new AxiosRequest(shopName, accessToken);
       const updatedSchedule = await axiosRequest.patch(
-        `/api/themes/${appState.selectedTheme}`,
+        `/api/schedules/${appState.selected}`,
         formData
       );
-      console.log(updatedSchedule);
+      let tmp = appState.schedules;
+      const idx = tmp.indexOf((el) => el.id === updatedSchedule.id);
+      tmp[idx] = updatedSchedule;
+      setAppState({
+        ...appState,
+        schedules: tmp,
+        schedule: false,
+        selected: null
+      });
     } catch (error) {
       appToast(error.message, 'error');
     }
@@ -77,8 +86,9 @@ const ThemeSchedule = () => {
             id="datetime-local"
             label="Start Date & Time"
             type="datetime-local"
-            value={new Date(formData.startAt)}
+            // value={new Date(formData.startAt)}
             onChange={(e) => handleCalendarChange('startAt', e)}
+            defaultValue={moment().add('1', 'hour').format('YYYY-MM-DDTHH:mm')}
             InputLabelProps={{
               shrink: true
             }}
@@ -94,8 +104,9 @@ const ThemeSchedule = () => {
               id="datetime-local"
               label="End Date & Time"
               type="datetime-local"
-              value={new Date(formData.endAt)}
+              // value={new Date(formData.endAt)}
               onChange={(e) => handleCalendarChange('endAt', e)}
+              defaultValue={moment().add('1', 'hour').format('YYYY-MM-DDTHH:mm')}
               InputLabelProps={{
                 shrink: true
               }}

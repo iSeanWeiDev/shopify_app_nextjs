@@ -8,11 +8,12 @@ const initialState = {
     shopName: null,
     accessToken: null
   },
-  themes: null,
-  schedules: null,
+  themes: [],
+  schedules: [],
   create: false,
   delete: false,
-  schedule: false
+  schedule: false,
+  selected: null
 };
 
 const AppStateProvider = ({ ...props }) => {
