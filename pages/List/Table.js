@@ -114,6 +114,7 @@ const ThemeListTable = () => {
                 </IconButton>
                 <IconButton
                   size="small"
+                  disabled={row.status === 'ACTIVATED' ? true : false}
                   aria-label="delete"
                   onClick={() => setAppState({ ...appState, delete: true, selected: row.id })}
                 >

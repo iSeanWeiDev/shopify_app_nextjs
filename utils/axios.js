@@ -50,7 +50,7 @@ class AxiosRequest {
     console.log(this.opts);
 
     try {
-      const response = await axios.delete(`${this.BASE_URL}${endpoint}`, payload, this.opts);
+      const response = await axios.delete(`${this.BASE_URL}${endpoint}`, this.opts);
 
       return response.data;
     } catch (error) {
