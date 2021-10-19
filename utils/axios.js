@@ -6,7 +6,7 @@ class AxiosRequest {
     console.log(shopName, accessToken);
     this.BASE_URL =
       process.env.NEXT_NODE_ENV === 'development'
-        ? 'https://new-zebra-23.loca.lt'
+        ? 'https://slimy-yak-92.loca.lt'
         : 'https://fxgqrpvka7.execute-api.us-east-1.amazonaws.com/dev';
 
     this.opts = {

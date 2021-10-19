@@ -39,6 +39,7 @@ const ThemeListTable = () => {
     setSchedules(appState.schedules);
   }, [appState.themes, appState.schedules]);
 
+  console.log(schedules);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

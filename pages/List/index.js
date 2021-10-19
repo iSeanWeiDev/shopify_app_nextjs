@@ -15,13 +15,7 @@ const ThemeList = () => {
           const { shopName, accessToken } = appState.app;
           const axiosRequest = new AxiosRequest(shopName, accessToken);
 
-          const resultOfValidate = await axiosRequest.post('/api/validate');
-          if (resultOfValidate.msg === 'NOT_FOUND_API_WEBHOOK') {
-            appToast(
-              'Current store doesnt setup the webhooks, please feel free to contact us',
-              'warning'
-            );
-          }
+          await axiosRequest.post('/api/validate');
 
           const themes = await axiosRequest.get('/api/themes');
           const schedules = await axiosRequest.get('/api/schedules');
