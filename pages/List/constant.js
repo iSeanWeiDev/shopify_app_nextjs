@@ -6,3 +6,9 @@ export const THEME_LIST_TABLE = [
   { label: 'Status', width: '12%', align: 'center' },
   { label: 'Actions', width: '14.5%', align: 'center' }
 ];
+
+export const THEME_STATUS = {
+  ACTIVATED: 'ACTIVATED',
+  SCHEDULED: 'SCHEDULED',
+  NOTREADY: 'NOT_READY'
+};

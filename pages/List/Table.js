@@ -24,7 +24,7 @@ import { loremIpsum } from 'react-lorem-ipsum';
 import { useAppState } from '@/providers/state-provider';
 import { convertISOToDate } from '@/utils/date-helper';
 import { useTableStyles } from './styles';
-import { THEME_LIST_TABLE } from './constant';
+import { THEME_LIST_TABLE, THEME_STATUS } from './constant';
 
 const ThemeListTable = () => {
   const classes = useTableStyles();
@@ -84,7 +84,7 @@ const ThemeListTable = () => {
                 {row?.scheduled_at}
               </TableCell>
               <TableCell component="td" align="center">
-                {row.status === 'ACTIVATED' && (
+                {row.status === THEME_STATUS['ACTIVATED'] && (
                   <Box display="flex" justifyContent="center" alignItems="center">
                     <div className={classes.status_live}>
                       <WorldIcon />
@@ -114,7 +114,7 @@ const ThemeListTable = () => {
                 </IconButton>
                 <IconButton
                   size="small"
-                  disabled={row.status === 'ACTIVATED' ? true : false}
+                  disabled={row.status === THEME_STATUS['ACTIVATED'] ? true : false}
                   aria-label="delete"
                   onClick={() => setAppState({ ...appState, delete: true, selected: row.id })}
                 >
